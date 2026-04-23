@@ -1,0 +1,14 @@
+torch 
+transformers 
+pillow 
+opencv-python 
+ultralytics 
+pytesseract 
+segment-anything 
+opencv-python 
+scikit-image 
+scipy 
+sentence-transformers
+rfdetr==1.6.2 
+supervision 
+roboflow

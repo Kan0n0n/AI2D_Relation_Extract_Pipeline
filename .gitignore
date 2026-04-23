@@ -1,0 +1,12 @@
+# Exclude image folder
+img/
+
+# Exclude static/outputs 
+static/
+
+weights/
+__pycache__/
+venv/
+data/
+results/
+uploads/
