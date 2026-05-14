@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/imgs/Philine-P5V6.webp" />
+    <title>Philine's Picture Book</title>
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/all.css" />
+  </head>
+  <body>
+    <div class="parallax-container">
+      <div class="parallax-layer-1"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="box">
+      <div class="left-item">
+        <span class="char">P</span>
+        <span class="char">h</span>
+        <span class="char">i</span>
+        <span class="char">l</span>
+        <span class="char">i</span>
+        <span class="char">n</span>
+        <span class="char">e</span>
+        's AI2D Relation Extractor
+      </div>
+      <div class="right-item">
+        <img class="header-right-img" src="imgs/rzmcsb_trans_rel.png" />
+      </div>
+    </div>
+
+    <div class="main-content-box">
+      <!-- Left sidebar - Utility selector -->
+      <div class="content-side">
+        <div class="content-box">
+          <h3>Utilities</h3>
+          <button class="utility-btn active" data-utility="ai2d-rel-extract">
+            <i class="fa-solid fa-hexagon-nodes"></i> AI2D Rel Extract
+          </button>
+        </div>
+      </div>
+
+      <!-- Center - Main utility area -->
+      <div class="content-center">
+        <div class="utility-panel active" id="ai2d-rel-extract">
+          <h2>AI2D Relation Extractor</h2>
+
+          <div class="ai2d-controls">
+            <label for="imageInput" class="custom-file-upload" id="fileLabel">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Choose Image
+            </label>
+            <input type="file" id="imageInput" accept="image/png, image/jpeg" />
+
+            <button class="ai2d-analyze-btn" onclick="processDiagram()">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Diagram
+            </button>
+          </div>
+
+          <p id="status" class="ai2d-status"></p>
+
+          <div class="ai2d-results-grid" id="image-gallery"></div>
+
+          <div id="zoomModal" class="modal">
+            <span class="close" id="closeZoom">&times;</span>
+
+            <div class="modal-content-container">
+              <img class="modal-content-image" id="zoomedImg" />
+              <pre class="modal-content-text" id="zoomedText"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="scripts/ai2d.js"></script>
+  </body>
+</html>

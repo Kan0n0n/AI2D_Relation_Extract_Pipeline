@@ -1,9 +1,10 @@
 import torch
+import os
 
 
 class Config:
 
-    home_path = "/home/philine/Documents/KLTN/AI2D/test_demo"
+    home_path = os.path.dirname(os.path.abspath(__file__))
     # Model paths
     SAM_CHECKPOINT = f"{home_path}/weights/sam_vit_l_0b3195.pth"
     DETECTION_MODEL = f"{home_path}/weights/ai2d_detection_basic.pth"

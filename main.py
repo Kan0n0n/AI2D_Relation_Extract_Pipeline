@@ -83,59 +83,58 @@ def save_results_as_json(results, output_path):
 
 
 def main():
-    # parser = argparse.ArgumentParser(
-    #     description="Run the Combined Diagram Analysis Pipeline"
-    # )
-    # parser.add_argument(
-    #     "--image", type=str, required=True, help="Path to the input image"
-    # )
-    # parser.add_argument(
-    #     "--labels",
-    #     type=str,
-    #     default=None,
-    #     help="Path to labels JSON (e.g. ovd_dict/lifeCycles_keepOnly.json)",
-    # )
-    # parser.add_argument(
-    #     "--outdir",
-    #     type=str,
-    #     default="results",
-    #     help="Directory to save output JSON and visualziations",
-    # )
-    # args = parser.parse_args()
-
-    img_path = "/home/philine/Documents/KLTN/AI2D/Images/ai2d-all/ai2d/images/37.png"
+    parser = argparse.ArgumentParser(
+        description="Run the Combined Diagram Analysis Pipeline"
+    )
+    parser.add_argument(
+        "--image", type=str, required=True, help="Path to the input image"
+    )
+    parser.add_argument(
+        "--save",
+        action="store_true",
+        help="Whether to save the output JSON",
+    )
+    parser.add_argument(
+        "--outdir",
+        type=str,
+        default="results",
+        help="Directory to save output JSON",
+    )
+    args = parser.parse_args()
+    if not args.image or not os.path.exists(args.image):
+        print("Error: Valid image path is required.")
+        return
+    img_path = args.image
 
     # 1. Initialize Pipeline
     print("Initializing CombinedPipeline...")
     pipeline = CombinedPipeline()
 
-    # 2. Load custom blob labels if provided
-    labels = "ovd_dict/lifeCycles_keepOnly.json"
-    blob_labels = []
-    if labels and os.path.exists(labels):
-        with open(labels, "r") as f:
-            labels_data = json.load(f)
-            blob_labels = labels_data.get("keep", [])
-
-    # 3. Create output directory if it doesn't exist
-    os.makedirs("results", exist_ok=True)
-
-    # 4. Process the Image
+    # 2. Process the Image
     results = pipeline.process_image(
         img_path,
-        blob_labels=blob_labels,
         run_relationships=True,
-        run_text_matching=True,
         run_clip=True,
         run_graph=True,
     )
 
-    # 5. Output and Save
-    # json_path = os.path.join(args.outdir, f"{os.path.basename(args.image)}.json")
-    # save_results_as_json(results, json_path)
-
-    # 6. Visualize (Saves images to the outdir)
-    pipeline.visualize_results(results)
+    # 3. Output and Save , Visualize Results
+    if args.save:
+        save_dir = args.outdir if args.outdir else "results"
+        os.makedirs(save_dir, exist_ok=True)
+        save_dir_image = os.path.join(save_dir, os.path.basename(args.image)[:-4])
+        os.makedirs(save_dir_image, exist_ok=True)
+        if not any(fname.endswith(".json") for fname in os.listdir(save_dir_image)):
+            json_path = os.path.join(
+                save_dir_image, f"{os.path.basename(args.image)}.json"
+            )
+            save_results_as_json(results, json_path)
+        if not any(fname.endswith(".png") for fname in os.listdir(save_dir_image)):
+            pipeline.visualize_results(results, save_dir=save_dir_image)
+        else:
+            pipeline.visualize_results(results, save_dir=None)
+    else:
+        pipeline.visualize_results(results)
 
     print("\n--- PIPELINE COMPLETED ---")
     if results.get("relationships"):

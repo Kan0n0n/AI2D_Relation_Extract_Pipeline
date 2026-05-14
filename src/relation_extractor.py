@@ -890,7 +890,7 @@ class RelationshipExtractor:
         if merged_width > self.W * 0.4:
             return True
 
-        in_top_zone = (cy1 + cy2) / 2 < self.H * config.TITLE_CENTER_FRACTION
+        in_top_zone = (cy1 + cy2) / 2 < self.H * self.config.TITLE_CENTER_FRACTION
         is_centered = self.W * 0.3 < merged_tcx < self.W * 0.7
 
         if in_top_zone and is_centered:
@@ -901,7 +901,7 @@ class RelationshipExtractor:
                     return False
                 if (
                     self._rect_distance(text["bbox"], blob["bbox"])
-                    < config.TITLE_BLOB_PROXIMITY
+                    < self.config.TITLE_BLOB_PROXIMITY
                 ):
                     return False
             return True

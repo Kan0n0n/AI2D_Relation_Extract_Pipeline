@@ -4,6 +4,9 @@ import time
 from flask import Flask, request, jsonify, url_for
 from flask_cors import CORS
 from src.pipeline import CombinedPipeline
+import matplotlib
+
+matplotlib.use("Agg")
 
 app = Flask(__name__)
 CORS(app)
@@ -127,6 +130,14 @@ def analyze_image():
     file = request.files["file"]
     image_path = os.path.join("uploads", file.filename)
     file.save(image_path)
+
+    # remove old results if exist
+    base_filename = os.path.splitext(file.filename)[0]
+    for suffix in ["_relations.png", "_text.png", "_clip.png", "_graph.png"]:
+        old_result_path = os.path.join("static/outputs", f"{base_filename}{suffix}")
+        print(f"Checking for old result: {old_result_path}")
+        if os.path.exists(old_result_path):
+            os.remove(old_result_path)
 
     print(f"Processing {image_path}...")
     results = pipeline.process_image(

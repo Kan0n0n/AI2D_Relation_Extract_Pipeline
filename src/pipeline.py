@@ -148,7 +148,7 @@ class CombinedPipeline:
             image_path,
             self.config.DETECTION_THRESHOLD,
         )
-        detections = self.filter_arrows_inside_blobs(detections)
+
         results["detections"] = detections
         print(f"Found {len(detections)} objects")
         print(f"{len([d for d in detections if d['label'] == 'blob'])} blobs")
@@ -201,7 +201,7 @@ class CombinedPipeline:
 
         run_text_matching = True
         if (
-            results["classify_category"] == "aPartOfs"
+            results["classify_category"] == "partsOfA"
             or results["classify_category"] == "typesOf"
         ):
             run_text_matching = False
